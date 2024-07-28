@@ -9,3 +9,10 @@ PROG_VERSION="0.0.1"
 
 cmd="run"
 global_retval=0
+
+print_version(){
+    cat <<EOF
+Версия программы $PROG - $PROG_VERSION
+EOF
+    exit
+}
