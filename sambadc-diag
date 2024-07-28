@@ -46,3 +46,23 @@ while true; do
 done
 
 task_list="$*"
+
+task_show(){
+    local func="$1"
+    echo "$func"
+}
+
+# Функция, определяющая наличие задач в списке и возвращающая код ошибки в случае выполнения или невыполнения задачи
+task_run(){
+    local retval=126
+    local func="$1"
+
+    if test -n "$task_list"; then
+	echo "$task_list" | tr ' ' '\n' | grep -q "^$func\$" || return 0
+    fi
+
+    $func && retval=0 || retval="$?"
+    test $retval=0 || global_retval=1
+
+    return $retval
+}
