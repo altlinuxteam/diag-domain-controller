@@ -30,3 +30,19 @@ $PROG - утилита для диагностики состояния конт
 EOF
     exit
 }
+
+TEMP=$(getopt -n "$PROG" -o "l,v,r,h", -l "list,version,report,help" -- "$@") || show_usage
+eval set -- "$TEMP"
+
+while true; do
+    case "$1" in
+	-l|--list) cmd="list"; shift ;;
+	-v|--version) print_version; shift ;;
+	-r|--report) shift; ;;
+	-h|--help) show_usage; shift ;;
+	--) shift; break ;;
+	*) fatal "Неверное значение: $1" ;;
+    esac
+done
+
+task_list="$*"
