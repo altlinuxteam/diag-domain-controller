@@ -16,3 +16,17 @@ print_version(){
 EOF
     exit
 }
+
+show_usage(){
+    cat <<EOF
+$PROG - утилита для диагностики состояния контроллера домена
+
+Формат вызова: $PROG [options] [<diagnostic-task>]
+
+Опции:
+-l, --list		Список диагностических задач
+-v, --version		Вывод версии утилиты
+-h, --help		Показать данную справку и выйти
+EOF
+    exit
+}
