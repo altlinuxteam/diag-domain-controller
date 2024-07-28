@@ -66,3 +66,14 @@ task_run(){
 
     return $retval
 }
+
+task(){
+    local task="$1"
+    
+    case "$cmd" in
+	list) task_show "$task" ;;
+	report) ;;
+	run) task_run "$task" && echo "[DONE]: $task" || echo "[FAIL]: $task" ;;
+	*) fatal "Неверное значение: $cmd" ;;
+    esac
+}
