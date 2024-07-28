@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+. shell-getopt
+
+PROG="${0##*/}"
+PROG_VERSION="0.0.1"
+
+cmd="run"
+global_retval=0
