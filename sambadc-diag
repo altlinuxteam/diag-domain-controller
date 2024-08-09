@@ -19,7 +19,7 @@ EOF
 
 show_usage(){
     cat <<EOF
-$PROG - утилита для диагностики состояния контроллера домена
+$PROG - инструмент диагностики состояния контроллера домена
 
 Формат вызова: $PROG [options] [<diagnostic-task>]
 
@@ -52,7 +52,6 @@ task_show(){
     echo "$func"
 }
 
-# Функция, определяющая наличие задач в списке и возвращающая код ошибки в случае выполнения или невыполнения задачи
 task_run(){
     local retval=126
     local func="$1"
@@ -77,3 +76,18 @@ task(){
 	*) fatal "Неверное значение: $cmd" ;;
     esac
 }
+
+is_not_empty_sysvol(){
+    local retval=0
+    local command="ls -A "/var/lib/samba/sysvol""
+
+    if [ ! -n "$(ls -A "/var/lib/samba/sysvol" 2> /dev/null)" ]; then
+	retval=2
+    fi
+
+    return $retval
+}
+
+task is_not_empty_sysvol
+
+exit "$global_retval"
