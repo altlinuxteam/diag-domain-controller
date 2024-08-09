@@ -1,0 +1,27 @@
+[Alterator Entry]
+Name = diag-domain-controller
+Type = Diagnostictool
+DisplayName = Domain controller
+DisplayName[ru_RU] = Контроллер домена
+DisplayName[en_EN] = Domain controller
+Comment = A tool for diagnosing the status of a domain controller
+Comment[ru_RU] = Инструмент диагностики состояния контроллера домена
+Comment[en_EN] = A tool for diagnosing the status of a domain controller
+Icon = diag-domain-controller
+ReportSuffix = txt
+
+[is_not_empty_sysvol]
+DisplayName = is_not_empty_sysvol
+DisplayName[ru_RU] = Проверка размера каталога sysvol
+DisplayName[en_EN] = check empty syslog catalog
+Comment = check empty syslog catalog
+Comment[ru_RU] = Проверка размера каталога sysvol
+Comment[en_EN] = check empty syslog catalog
+
+[samba_version]
+DisplayName = samba_version
+DisplayName[ru_RU] = Проверка наличия пакета Samba
+DisplayName[en_EN] = Checking for the Samba package
+Comment = Checking for the Samba package
+Comment[ru_RU] = Проверка наличия пакета Samba
+Comment[en_EN] = Checking for the Samba package
