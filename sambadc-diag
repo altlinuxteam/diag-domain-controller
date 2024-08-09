@@ -68,12 +68,12 @@ task_run(){
 
 task(){
     local task="$1"
-    
+
     case "$cmd" in
 	list) task_show "$task" ;;
 	report) ;;
-# Тут добавить условие на код ошибки (вывод [WARN], когда код ошибки у теста = 2)
-	run) task_run "$task" && echo -e "[DONE]: $task\n" || echo "[FAIL]: $task\n" ;;
+# Here, add a condition for the error code (output [WARN] when the error code of the test = 2)
+	run) task_run "$task" && echo "[DONE]: $task" || echo "[FAIL]: $task" ;;
 	*) fatal "Неверное значение: $cmd" ;;
     esac
 }
@@ -82,11 +82,7 @@ is_not_empty_sysvol(){
     local retval=0
     local command="ls -A "/var/lib/samba/sysvol""
 
-    if [ -n "$(ls -A "/var/lib/samba/sysvol" 2> /dev/null)" ]; then
-	echo "Каталог "sysvol" содержит следующие файлы:"
-	$command
-    else
-    echo "Каталог "sysvol" пустой."
+    if [ ! -n "$(ls -A "/var/lib/samba/sysvol" 2> /dev/null)" ]; then
 	retval=2
     fi
 
@@ -102,11 +98,8 @@ samba_version(){
     local tag="$(echo "$policy_output" | grep "DistTag" | awk '{print $NF}')"
     local installed_version=""$version"-"$release":"$tag""
 
-    if [ -z "$installed_version" ]; then
-	echo -e "Пакет "$packet_name" не установлен в системе."
+    if [ -z "$version" ] && [ -z "$release" ] && [ -z "$tag" ]; then
 	retval=1
-    else
-	echo -e "Версия установленного пакета "$packet_name": "$installed_version"."
     fi
 
     return $retval
