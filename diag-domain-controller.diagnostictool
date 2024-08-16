@@ -18,10 +18,10 @@ Comment = check empty syslog catalog
 Comment[ru_RU] = Проверка размера каталога sysvol
 Comment[en_EN] = check empty syslog catalog
 
-[samba_version]
-DisplayName = samba_version
-DisplayName[ru_RU] = Проверка наличия пакета Samba
-DisplayName[en_EN] = Checking for the Samba package
-Comment = Checking for the Samba package
-Comment[ru_RU] = Проверка наличия пакета Samba
-Comment[en_EN] = Checking for the Samba package
+[test_hostname]
+DisplayName = test_hostname
+DisplayName[ru_RU] = Проверка полного доменного имени хоста
+DisplayName[en_EN] = Checking the full domain name of the host
+Comment = Checking the full domain name of the host
+Comment[ru_RU] = Проверка полного доменного имени хоста
+Comment[en_EN] = Checking the full domain name of the host
