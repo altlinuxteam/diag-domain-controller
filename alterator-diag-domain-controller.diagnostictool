@@ -1,5 +1,5 @@
 [Alterator Entry]
-Name = diag-domain-controller
+Name = alterator-diag-domain-controller
 Type = Diagnostictool
 DisplayName = Domain controller
 DisplayName[ru_RU] = Контроллер домена
@@ -7,7 +7,7 @@ DisplayName[en_EN] = Domain controller
 Comment = A tool for diagnosing the status of a domain controller
 Comment[ru_RU] = Инструмент диагностики состояния контроллера домена
 Comment[en_EN] = A tool for diagnosing the status of a domain controller
-Icon = diag-domain-controller
+Icon = alterator-diag-domain-controller
 ReportSuffix = txt
 
 [is_not_empty_sysvol]

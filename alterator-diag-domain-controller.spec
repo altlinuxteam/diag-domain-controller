@@ -1,6 +1,6 @@
 %define _unpackaged_files_terminate_build 1
-Name: diag-domain-controller
-Version: 0.0.2
+Name: alterator-diag-domain-controller
+Version: 0.0.1
 Release: alt1
 
 Summary: Domain Controller Diagnostic Tool.
@@ -34,9 +34,6 @@ install -p -D %name.svg %buildroot%_iconsdir/hicolor/scalable/apps/%name.svg
 %_iconsdir/hicolor/scalable/apps/%name.svg
 
 %changelog
-* Thu Aug 08 2024 Sergey Savelev <savelevsa@basealt.ru> 0.0.2-alt1
-- changes in the description of the tests
-
 * Thu Aug 08 2024 Sergey Savelev <savelevsa@basealt.ru> 0.0.1-alt1
 - initial build
 
