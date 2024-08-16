@@ -1,57 +1,82 @@
 #!/bin/bash
+# Copyright (C) 2024 Evgeny Sinelnikov <sin@altlinux.org>
+# Copyright (C) 2024 Sergey Savelev <savelevsa@basealt.ru>
+#
+# A tool for diagnosing the status of a domain controller
+#
+# This program is free software: you can redistribute it and/or modify
+#
+# SPDX-License-Identifier: GNU GPL v3.0
 
 set -euo pipefail
 
 . shell-getopt
 
-PROG="${0##*/}"
-PROG_VERSION="0.0.1"
-
+readonly PROG_NAME="${0##*/}"
+readonly VERSION="0.0.1"
+readonly task_list="$*"
 cmd="run"
-global_retval=0
 
+# Function for displaying the program version
 print_version(){
     cat <<EOF
-Версия программы $PROG - $PROG_VERSION
+Версия программы $PROG_NAME - $VERSION
 EOF
-    exit
+    exit 0
 }
 
+# A function for displaying background information
 show_usage(){
     cat <<EOF
-$PROG - инструмент диагностики состояния контроллера домена
+$PROG_NAME - инструмент диагностики состояния контроллера домена
 
-Формат вызова: $PROG [options] [<diagnostic-task>]
+Формат вызова: $PROG_NAME [options] [<diagnostic-task>]
 
 Опции:
--l, --list		Список диагностических задач
--v, --version		Вывод версии утилиты
--h, --help		Показать данную справку и выйти
+    -l, --list			Список диагностических задач
+    -v, --version		Вывод версии утилиты
+    -h, --help			Показать данную справку и выйти
 EOF
-    exit
+    exit 0
 }
 
-TEMP=$(getopt -n "$PROG" -o "l,v,r,h", -l "list,version,report,help" -- "$@") || show_usage
+readonly TEMP=$(getopt -n "${0##*/}" -o "l,v,r,h", -l "list,version,report,help" -- "$@") || show_usage
 eval set -- "$TEMP"
 
 while true; do
     case "$1" in
-	-l|--list) cmd="list"; shift ;;
-	-v|--version) print_version; shift ;;
-	-r|--report) shift; ;;
-	-h|--help) show_usage; shift ;;
-	--) shift; break ;;
-	*) fatal "Неверное значение: $1" ;;
+	-l|--list)
+	    cmd="list"
+	    shift
+	    ;;
+	-v|--version)
+	    print_version
+	    shift
+	    ;;
+	-r|--report)
+	    shift
+	    ;;
+	-h|--help)
+	    show_usage
+	    shift
+	    ;;
+	--)
+	    shift
+	    break
+	    ;;
+	*)
+	    fatal "Unrecognized option: $1"
+	    ;;
     esac
 done
 
-task_list="$*"
-
+# A function for displaying a list of tests
 task_show(){
     local func="$1"
     echo "$func"
 }
 
+# Function for running tests
 task_run(){
     local retval=126
     local func="$1"
@@ -61,23 +86,32 @@ task_run(){
     fi
 
     $func && retval=0 || retval="$?"
-    test $retval=0 || global_retval=1
+    test $retval=0
 
     return $retval
 }
 
+# Depending on the parameter of the cmd variable, the function decides what to run
 task(){
     local task="$1"
 
     case "$cmd" in
-	list) task_show "$task" ;;
-	report) ;;
+	list)
+	    task_show "$task"
+	    ;;
+	report)
+	    ;;
 # Here, add a condition for the error code (output [WARN] when the error code of the test = 2)
-	run) task_run "$task" && echo "[DONE]: $task" || echo "[FAIL]: $task" ;;
-	*) fatal "Неверное значение: $cmd" ;;
+	run)
+	    task_run "$task" && echo "[DONE]: $task" || echo "[FAIL]: $task"
+	    ;;
+	*)
+	    fatal "Unrecognized command: $cmd"
+	    ;;
     esac
 }
 
+# The sysvol directory size check function
 is_not_empty_sysvol(){
     local retval=0
     local command="ls -A "/var/lib/samba/sysvol""
@@ -89,23 +123,20 @@ is_not_empty_sysvol(){
     return $retval
 }
 
-samba_version(){
+# Checking the full domain name of the host (FQDN)
+test_hostname(){
     local retval=0
-    local packet_name="samba"
-    local policy_output="$(rpm -qi "$packet_name" 2> /dev/null)"
-    local version="$(echo "$policy_output" | grep "Version" | awk '{print $NF}')"
-    local release="$(echo "$policy_output" | grep "Release" | awk '{print $NF}')"
-    local tag="$(echo "$policy_output" | grep "DistTag" | awk '{print $NF}')"
-    local installed_version=""$version"-"$release":"$tag""
+    local host="$(hostname -f)"
 
-    if [ -z "$version" ] && [ -z "$release" ] && [ -z "$tag" ]; then
-	retval=1
-    fi
+    { [[ "$host" == *.* ]] && [[ "$host" != $.* ]] && [[ "$(host "$host")" ]]; } || retval=2
 
     return $retval
 }
 
 task is_not_empty_sysvol
-task samba_version
+task test_hostname
 
-exit "$global_retval"
+# TODO: Написать остальные функции для тестов
+# TODO: Добавить функцию для составления и вывода отчёта в файл отчёта
+# TODO: В функции task() добавить результат [WARN]
+# TODO: Подумать над тем, как выводить результаты [DONE], [FAIL], [WARN]
