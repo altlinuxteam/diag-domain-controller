@@ -111,13 +111,18 @@ task(){
     esac
 }
 
-# The sysvol directory size check function
-is_not_empty_sysvol(){
+# A function for viewing general domain information
+check_domain_info(){
     local retval=0
-    local command="ls -A "/var/lib/samba/sysvol""
+    output="$(samba-tool domain info 127.0.0.1 2>&1)"
+    command_status=$?
 
-    if [ ! -n "$(ls -A "/var/lib/samba/sysvol" 2> /dev/null)" ]; then
-	retval=2
+    if [[ "$command_status" -ne 0 ]]; then
+	retval=1
+    else
+	if [[ "$output" == *"ERROR: Invalid IP address '127.0.0.1'!"* ]]; then
+	    retval=1
+	fi
     fi
 
     return $retval
@@ -133,8 +138,20 @@ test_hostname(){
     return $retval
 }
 
-task is_not_empty_sysvol
+# The sysvol directory size check function
+is_not_empty_sysvol(){
+    local retval=0
+
+    if [ -z "$(ls -A "/var/lib/samba/sysvol" 2> /dev/null)" ]; then
+	retval=2
+    fi
+
+    return $retval
+}
+
+task check_domain_info
 task test_hostname
+task is_not_empty_sysvol
 
 # TODO: Написать остальные функции для тестов
 # TODO: Добавить функцию для составления и вывода отчёта в файл отчёта
