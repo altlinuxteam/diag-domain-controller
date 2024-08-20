@@ -4,24 +4,32 @@ Type = Diagnostictool
 DisplayName = Domain controller
 DisplayName[ru_RU] = Контроллер домена
 DisplayName[en_EN] = Domain controller
-Comment = A tool for diagnosing the status of a domain controller
+Comment = The Domain Controller Status Diagnostic Utility
 Comment[ru_RU] = Инструмент диагностики состояния контроллера домена
-Comment[en_EN] = A tool for diagnosing the status of a domain controller
+Comment[en_EN] = The Domain Controller Status Diagnostic Utility
 Icon = alterator-diag-domain-controller
 ReportSuffix = txt
 
+[is_domain_info_available]
+DisplayName = is_domain_info_available
+DisplayName[ru_RU] = Проверка доступности просмотра общей информации о домене
+DisplayName[en_EN] = Checking the availability of viewing general domain information
+Comment = Checking the availability of viewing general domain information
+Comment[ru_RU] = Проверка доступности просмотра общей информации о домене
+Comment[en_EN] = Checking the availability of viewing general domain information
+
+[is_hostname_correct]
+DisplayName = is_hostname_correct
+DisplayName[ru_RU] = Проверка правильного написания доменного имени хоста
+DisplayName[en_EN] = Checking the correct spelling of the domain name of the host
+Comment = Checking the correct spelling of the domain name of the host
+Comment[ru_RU] = Проверка правильного написания доменного имени хоста
+Comment[en_EN] = Checking the correct spelling of the domain name of the host
+
 [is_not_empty_sysvol]
 DisplayName = is_not_empty_sysvol
-DisplayName[ru_RU] = Проверка размера каталога sysvol
-DisplayName[en_EN] = check empty syslog catalog
-Comment = check empty syslog catalog
-Comment[ru_RU] = Проверка размера каталога sysvol
-Comment[en_EN] = check empty syslog catalog
-
-[test_hostname]
-DisplayName = test_hostname
-DisplayName[ru_RU] = Проверка полного доменного имени хоста
-DisplayName[en_EN] = Checking the full domain name of the host
-Comment = Checking the full domain name of the host
-Comment[ru_RU] = Проверка полного доменного имени хоста
-Comment[en_EN] = Checking the full domain name of the host
+DisplayName[ru_RU] = Проверка: содержит ли файлы каталог sysvol
+DisplayName[en_EN] = Checking if the sysvol directory is empty
+Comment = Checking if the sysvol directory is empty
+Comment[ru_RU] = Проверка: содержит ли файлы каталог sysvol
+Comment[en_EN] = Checking if the sysvol directory is empty
