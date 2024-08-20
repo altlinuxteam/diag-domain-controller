@@ -36,8 +36,16 @@ Comment[en_EN] = Checking if the sysvol directory is empty
 
 [is_samba_package_installed]
 DisplayName = is_samba_package_installed
-DisplayName[ru_RU] = Проверка наличия установленного в системе пакета Samba
+DisplayName[ru_RU] = Проверка наличия установленного в системе пакета samba
 DisplayName[en_EN] = Checking for the samba package in the system
 Comment = Checking for the samba package in the system
-Comment[ru_RU] = Проверка наличия установленного в системе пакета Samba
+Comment[ru_RU] = Проверка наличия установленного в системе пакета samba
 Comment[en_EN] = Checking for the samba package in the system
+
+[is_admx_basealt_package_installed]
+DisplayName = is_admx_basealt_package_installed
+DisplayName[ru_RU] = Проверка наличия установленного в системе пакета admx-basealt
+DisplayName[en_EN] = Checking for the admx-basealt package in the system
+Comment = Checking for the admx-basealt package in the system
+Comment[ru_RU] = Проверка наличия установленного в системе пакета admx-basealt
+Comment[en_EN] = Checking for the admx-basealt package in the system
