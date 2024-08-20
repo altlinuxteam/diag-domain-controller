@@ -163,11 +163,24 @@ is_admx_basealt_package_installed() {
     return $retval
 }
 
+# Checking whether the Samba service is running
+is_samba_service_running() {
+    local retval=0
+    local service=
+
+    service="samba.service"
+
+    systemctl status "$service" &> /dev/null || retval=1
+
+    return $retval
+}
+
 task is_domain_info_available
 task is_hostname_correct
 task is_not_empty_sysvol
 task is_samba_package_installed
 task is_admx_basealt_package_installed
+task is_samba_service_running
 
 # TODO: It is planned to write the rest of the functions for the tests
 # TODO: Will need to add a logging feature

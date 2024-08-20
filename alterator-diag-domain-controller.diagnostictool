@@ -49,3 +49,11 @@ DisplayName[en_EN] = Checking for the admx-basealt package in the system
 Comment = Checking for the admx-basealt package in the system
 Comment[ru_RU] = Проверка наличия установленного в системе пакета admx-basealt
 Comment[en_EN] = Checking for the admx-basealt package in the system
+
+[is_samba_service_running]
+DisplayName = is_samba_service_running
+DisplayName[ru_RU] = Проверка: запущена ли служба Samba
+DisplayName[en_EN] = Checking whether the Samba service is running
+Comment = Checking whether the Samba service is running
+Comment[ru_RU] = Проверка: запущена ли служба Samba
+Comment[en_EN] = Checking whether the Samba service is running
