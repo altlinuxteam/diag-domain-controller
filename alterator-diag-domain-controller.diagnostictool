@@ -65,3 +65,11 @@ DisplayName[en_EN] = Samba databases are checked for errors
 Comment = Samba databases are checked for errors
 Comment[ru_RU] = Проверка на наличие ошибок в базах Samba
 Comment[en_EN] = Samba databases are checked for errors
+
+[is_ntp_service_running]
+DisplayName = is_ntp_service_running
+DisplayName[ru_RU] = Проверка синхронизации времени
+DisplayName[en_EN] = Time Synchronization Check - NTP service activity
+Comment = Time Synchronization Check - NTP service activity
+Comment[ru_RU] = Проверка синхронизации времени
+Comment[en_EN] = Time Synchronization Check - NTP service activity
