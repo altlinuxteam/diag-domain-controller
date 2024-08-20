@@ -207,6 +207,24 @@ is_dns_forward_address_valid() {
     return $retval
 }
 
+# Checking for own address next to the nameserver string
+is_address_written_in_nameserver() {
+    local retval=0
+    local ip_addr=
+    local nameservers=
+
+    ip_addr="$(hostname -i)"
+    nameservers="$(grep "nameserver " /etc/resolv.conf | awk '{print $2}')"
+
+    if echo "$nameservers" | grep -q "^$ip_addr$" || echo "$nameservers" | grep -q "127.0.0.1"; then
+	retval=0
+    else
+	retval=2
+    fi
+
+    return $retval
+}
+
 task is_domain_info_available
 task is_hostname_correct
 task is_not_empty_sysvol
@@ -216,6 +234,7 @@ task is_samba_service_running
 task are_there_errors_in_samba_databases
 task is_ntp_service_running
 task is_dns_forward_address_valid
+task is_address_written_in_nameserver
 
 # TODO: It is planned to write the rest of the functions for the tests
 # TODO: Will need to add a logging feature

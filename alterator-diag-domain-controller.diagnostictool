@@ -81,3 +81,11 @@ DisplayName[en_EN] = Checking the operation of recursive dns queries - checking 
 Comment = Checking the operation of recursive dns queries - checking the validity of the dns forward address
 Comment[ru_RU] = Проверка работы рекурсивных dns-запросов
 Comment[en_EN] = Checking the operation of recursive dns queries - checking the validity of the dns forward address
+
+[is_address_written_in_nameserver]
+DisplayName = is_address_written_in_nameserver
+DisplayName[ru_RU] = Проверка наличия адреса 127.0.0.1 или адреса интерфейса в строке nameserver
+DisplayName[en_EN] = Checking for own address next to the nameserver string
+Comment = Checking for own address next to the nameserver string
+Comment[ru_RU] = Проверка наличия адреса 127.0.0.1 или адреса интерфейса в строке nameserver
+Comment[en_EN] = Checking for own address next to the nameserver string
