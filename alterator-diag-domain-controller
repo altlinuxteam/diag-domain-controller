@@ -175,12 +175,22 @@ is_samba_service_running() {
     return $retval
 }
 
+# Samba databases are checked for errors
+are_there_errors_in_samba_databases() {
+    local retval=0
+
+    samba-tool dbcheck 2> /dev/null | grep -q "Checked \+[[:digit:]]\+ objects (0 errors)" || retval=1
+
+    return $retval
+}
+
 task is_domain_info_available
 task is_hostname_correct
 task is_not_empty_sysvol
 task is_samba_package_installed
 task is_admx_basealt_package_installed
 task is_samba_service_running
+task are_there_errors_in_samba_databases
 
 # TODO: It is planned to write the rest of the functions for the tests
 # TODO: Will need to add a logging feature

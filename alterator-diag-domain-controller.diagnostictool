@@ -57,3 +57,11 @@ DisplayName[en_EN] = Checking whether the Samba service is running
 Comment = Checking whether the Samba service is running
 Comment[ru_RU] = Проверка: запущена ли служба Samba
 Comment[en_EN] = Checking whether the Samba service is running
+
+[are_there_errors_in_samba_databases]
+DisplayName = are_there_errors_in_samba_databases
+DisplayName[ru_RU] = Проверка на наличие ошибок в базах Samba
+DisplayName[en_EN] = Samba databases are checked for errors
+Comment = Samba databases are checked for errors
+Comment[ru_RU] = Проверка на наличие ошибок в базах Samba
+Comment[en_EN] = Samba databases are checked for errors
