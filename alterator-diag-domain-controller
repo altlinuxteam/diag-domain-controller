@@ -33,7 +33,7 @@ $PROG_NAME - The Domain Controller Status Diagnostic Utility
 
 Usage: $PROG_NAME [options] [<diagnostic-task>]
 
-Опции:
+Options:
     -l, --list			list of diagnostic tasks
     -V, --version		print program version and exit
     -h, --help			show this text and exit
@@ -139,9 +139,22 @@ is_not_empty_sysvol() {
     return $retval
 }
 
+# Checking for the samba package in the system
+is_samba_package_installed() {
+    local retval=0
+    local packet_name=
+
+    packet_name="samba"
+
+    rpm -qi "$packet_name" &> /dev/null || retval=1
+
+    return $retval
+}
+
 task is_domain_info_available
 task is_hostname_correct
 task is_not_empty_sysvol
+task is_samba_package_installed
 
 # TODO: It is planned to write the rest of the functions for the tests
 # TODO: Will need to add a logging feature

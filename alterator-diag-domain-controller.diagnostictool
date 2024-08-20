@@ -33,3 +33,11 @@ DisplayName[en_EN] = Checking if the sysvol directory is empty
 Comment = Checking if the sysvol directory is empty
 Comment[ru_RU] = Проверка: содержит ли файлы каталог sysvol
 Comment[en_EN] = Checking if the sysvol directory is empty
+
+[is_samba_package_installed]
+DisplayName = is_samba_package_installed
+DisplayName[ru_RU] = Проверка наличия установленного в системе пакета Samba
+DisplayName[en_EN] = Checking for the samba package in the system
+Comment = Checking for the samba package in the system
+Comment[ru_RU] = Проверка наличия установленного в системе пакета Samba
+Comment[en_EN] = Checking for the samba package in the system
