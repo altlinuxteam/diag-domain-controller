@@ -193,6 +193,20 @@ is_ntp_service_running() {
     return $retval
 }
 
+# Checking the operation of recursive dns queries - checking the validity of the dns forward address
+is_dns_forward_address_valid() {
+    local retval=0
+    local validate_ipv4=
+    local string_forwarder=
+
+    validate_ipv4="^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$"
+    string_forwarder="$(grep "dns forwarder =" /etc/samba/smb.conf | awk '{print $4}')"
+
+    grep -E "$validate_ipv4" >/dev/null 2>&1 <<< "$string_forwarder" || retval=2
+
+    return $retval
+}
+
 task is_domain_info_available
 task is_hostname_correct
 task is_not_empty_sysvol
@@ -201,6 +215,7 @@ task is_admx_basealt_package_installed
 task is_samba_service_running
 task are_there_errors_in_samba_databases
 task is_ntp_service_running
+task is_dns_forward_address_valid
 
 # TODO: It is planned to write the rest of the functions for the tests
 # TODO: Will need to add a logging feature

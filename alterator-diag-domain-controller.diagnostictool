@@ -73,3 +73,11 @@ DisplayName[en_EN] = Time Synchronization Check - NTP service activity
 Comment = Time Synchronization Check - NTP service activity
 Comment[ru_RU] = Проверка синхронизации времени
 Comment[en_EN] = Time Synchronization Check - NTP service activity
+
+[is_dns_forward_address_valid]
+DisplayName = is_dns_forward_address_valid
+DisplayName[ru_RU] = Проверка работы рекурсивных dns-запросов
+DisplayName[en_EN] = Checking the operation of recursive dns queries - checking the validity of the dns forward address
+Comment = Checking the operation of recursive dns queries - checking the validity of the dns forward address
+Comment[ru_RU] = Проверка работы рекурсивных dns-запросов
+Comment[en_EN] = Checking the operation of recursive dns queries - checking the validity of the dns forward address
