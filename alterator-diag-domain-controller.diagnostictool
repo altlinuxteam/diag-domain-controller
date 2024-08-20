@@ -89,3 +89,11 @@ DisplayName[en_EN] = Checking for own address next to the nameserver string
 Comment = Checking for own address next to the nameserver string
 Comment[ru_RU] = Проверка наличия адреса 127.0.0.1 или адреса интерфейса в строке nameserver
 Comment[en_EN] = Checking for own address next to the nameserver string
+
+[does_kerberos_work]
+DisplayName = does_kerberos_work
+DisplayName[ru_RU] = Проверка работоспособности kerberos
+DisplayName[en_EN] = Checking the health of kerberos and ldap - there must be appropriate records
+Comment = Checking the health of kerberos and ldap - there must be appropriate records
+Comment[ru_RU] = Проверка работоспособности kerberos
+Comment[en_EN] = Checking the health of kerberos and ldap - there must be appropriate records
