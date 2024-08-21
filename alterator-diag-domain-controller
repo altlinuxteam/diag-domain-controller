@@ -101,17 +101,18 @@ test_status() {
 
     case "$retval" in
 	0)
-	    echo "[DONE]: task: $task"
+	    echo "[DONE]: $task"
 	    ;;
 	1)
-	    echo "[FAIL]: task: $task"
+	    echo "[FAIL]: $task"
 	    ;;
 	2)
-	    echo "[WARN]: task: $task"
+	    echo "[WARN]: $task"
 	    ;;
 	*)
-	    echo "[FAIL]: task: $task"
+	    echo "[FAIL]: $task"
 	    ;;
+    esac
 }
 
 # Depending on the parameter of the cmd variable, the function decides what to run
@@ -125,10 +126,10 @@ task() {
 	report)
 	    ;;
 	run)
-	    if -z "$task_list" || grep "$task" <<< "$task_list"; then
+	    if test -z "$task_list" || grep "$task" <<< "$task_list"; then
 		local retval=0
 
-		task_run "task" || retval="$?"
+		task_run "$task" || retval="$?"
 		test_status "$retval" "$task"
 	    fi
 	    ;;
