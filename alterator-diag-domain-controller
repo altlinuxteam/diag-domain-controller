@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Copyright (C) 2024 Evgeny Sinelnikov <sin@altlinux.org>
+# Copyright (C) 2024 Andrey Limachko <liannnix@altlinux.org>
+# Copyright (C) 2024 Elena Dyatlenko <lenka@altlinux.org>
 # Copyright (C) 2024 Sergey Savelev <savelevsa@basealt.ru>
 #
 # The Domain Controller Status Diagnostic Utility
@@ -41,7 +43,7 @@ EOF
     exit 0
 }
 
-TEMP=$(getopt -n "${0##*/}" -o "l,v,r,h", -l "list,version,report,help" -- "$@") || show_usage
+TEMP=$(getopt -n "${0##*/}" -o "l,V,r,h", -l "list,version,report,help" -- "$@") || show_usage
 eval set -- "$TEMP"
 
 while :; do
@@ -50,7 +52,7 @@ while :; do
 	    cmd="list"
 	    shift
 	    ;;
-	-v|--version)
+	-V|--version)
 	    print_version
 	    shift
 	    ;;
@@ -87,9 +89,29 @@ task_run() {
     fi
 
     $func && retval=0 || retval="$?"
-    test $retval=0 || global_retval=1
+    test $retval = 0 || global_retval=1
 
     return $retval
+}
+
+# Determining the test execution status
+test_status() {
+    local retval="$1"
+    local task="$2"
+
+    case "$retval" in
+	0)
+	    echo "[DONE]: task: $task"
+	    ;;
+	1)
+	    echo "[FAIL]: task: $task"
+	    ;;
+	2)
+	    echo "[WARN]: task: $task"
+	    ;;
+	*)
+	    echo "[FAIL]: task: $task"
+	    ;;
 }
 
 # Depending on the parameter of the cmd variable, the function decides what to run
@@ -102,9 +124,13 @@ task() {
 	    ;;
 	report)
 	    ;;
-# Here, add a condition for the error code (output [WARN] when the error code of the test = 2)
 	run)
-	    task_run "$task" && echo "[DONE]: $task" || echo "[FAIL]: $task"
+	    if -z "$task_list" || grep "$task" <<< "$task_list"; then
+		local retval=0
+
+		task_run "task" || retval="$?"
+		test_status "$retval" "$task"
+	    fi
 	    ;;
 	*)
 	    fatal "Unrecognized command: $cmd"
