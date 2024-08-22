@@ -2,14 +2,16 @@
 %define diagnostic_tool domain-controller
 Name: diag-%diagnostic_tool
 Version: 0.0.1
-Release: alt1
+Release: alt2
 
 Summary: Domain Controller Diagnostic Tool
 License: GPLv3
 Group: System/Configuration/Other
 URL: https://gitlab.basealt.space/alt/diag-domain-controller
 BuildArch: noarch
-Source0: %name-%version.tar
+Source: %name-%version.tar
+
+BuildRequires: rpm-macros-alterator
 
 %description
 Domain Controller Diagnostic Tool.
@@ -35,6 +37,9 @@ install -p -D %name.svg %buildroot%_iconsdir/hicolor/scalable/apps/%name.svg
 %_iconsdir/hicolor/scalable/apps/%name.svg
 
 %changelog
+* Thu Aug 22 2024 Evgeny Sinelnikov <sin@altlinux.org> 0.0.1-alt2
+- initial first build for Sisyphus
+
 * Thu Aug 08 2024 Sergey Savelev <savelevsa@basealt.ru> 0.0.1-alt1
 - initial build
 
