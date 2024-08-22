@@ -1,99 +1,51 @@
 [Alterator Entry]
-Name = alterator-diag-domain-controller
+Name = domain_controller
 Type = Diagnostictool
 DisplayName = Domain controller
 DisplayName[ru_RU] = Контроллер домена
-DisplayName[en_EN] = Domain controller
 Comment = The Domain Controller Status Diagnostic Utility
 Comment[ru_RU] = Инструмент диагностики состояния контроллера домена
-Comment[en_EN] = The Domain Controller Status Diagnostic Utility
-Icon = alterator-diag-domain-controller
+Icon = diag-domain-controller
 ReportSuffix = txt
 
 [is_domain_info_available]
-DisplayName = is_domain_info_available
+DisplayName = Checking the availability of viewing general domain information
 DisplayName[ru_RU] = Проверка доступности просмотра общей информации о домене
-DisplayName[en_EN] = Checking the availability of viewing general domain information
 Comment = Checking the availability of viewing general domain information
 Comment[ru_RU] = Проверка доступности просмотра общей информации о домене
-Comment[en_EN] = Checking the availability of viewing general domain information
 
 [is_hostname_correct]
-DisplayName = is_hostname_correct
+DisplayName = Checking the correct spelling of the domain name of the host
 DisplayName[ru_RU] = Проверка правильного написания доменного имени хоста
-DisplayName[en_EN] = Checking the correct spelling of the domain name of the host
 Comment = Checking the correct spelling of the domain name of the host
 Comment[ru_RU] = Проверка правильного написания доменного имени хоста
-Comment[en_EN] = Checking the correct spelling of the domain name of the host
 
 [is_not_empty_sysvol]
-DisplayName = is_not_empty_sysvol
+DisplayName = Checking if the sysvol directory is empty
 DisplayName[ru_RU] = Проверка: содержит ли файлы каталог sysvol
-DisplayName[en_EN] = Checking if the sysvol directory is empty
 Comment = Checking if the sysvol directory is empty
 Comment[ru_RU] = Проверка: содержит ли файлы каталог sysvol
-Comment[en_EN] = Checking if the sysvol directory is empty
 
 [is_samba_package_installed]
-DisplayName = is_samba_package_installed
+DisplayName = Checking for the samba package in the system
 DisplayName[ru_RU] = Проверка наличия установленного в системе пакета samba
-DisplayName[en_EN] = Checking for the samba package in the system
 Comment = Checking for the samba package in the system
 Comment[ru_RU] = Проверка наличия установленного в системе пакета samba
-Comment[en_EN] = Checking for the samba package in the system
-
-[is_admx_basealt_package_installed]
-DisplayName = is_admx_basealt_package_installed
-DisplayName[ru_RU] = Проверка наличия установленного в системе пакета admx-basealt
-DisplayName[en_EN] = Checking for the admx-basealt package in the system
-Comment = Checking for the admx-basealt package in the system
-Comment[ru_RU] = Проверка наличия установленного в системе пакета admx-basealt
-Comment[en_EN] = Checking for the admx-basealt package in the system
 
 [is_samba_service_running]
-DisplayName = is_samba_service_running
+DisplayName = Checking whether the Samba service is running
 DisplayName[ru_RU] = Проверка: запущена ли служба Samba
-DisplayName[en_EN] = Checking whether the Samba service is running
 Comment = Checking whether the Samba service is running
 Comment[ru_RU] = Проверка: запущена ли служба Samba
-Comment[en_EN] = Checking whether the Samba service is running
 
 [are_there_errors_in_samba_databases]
-DisplayName = are_there_errors_in_samba_databases
+DisplayName = Samba databases are checked for errors
 DisplayName[ru_RU] = Проверка на наличие ошибок в базах Samba
-DisplayName[en_EN] = Samba databases are checked for errors
 Comment = Samba databases are checked for errors
 Comment[ru_RU] = Проверка на наличие ошибок в базах Samba
-Comment[en_EN] = Samba databases are checked for errors
 
 [is_ntp_service_running]
-DisplayName = is_ntp_service_running
+DisplayName = Time Synchronization Check - NTP service activity
 DisplayName[ru_RU] = Проверка синхронизации времени
-DisplayName[en_EN] = Time Synchronization Check - NTP service activity
 Comment = Time Synchronization Check - NTP service activity
 Comment[ru_RU] = Проверка синхронизации времени
-Comment[en_EN] = Time Synchronization Check - NTP service activity
-
-[is_dns_forward_address_valid]
-DisplayName = is_dns_forward_address_valid
-DisplayName[ru_RU] = Проверка работы рекурсивных dns-запросов
-DisplayName[en_EN] = Checking the operation of recursive dns queries - checking the validity of the dns forward address
-Comment = Checking the operation of recursive dns queries - checking the validity of the dns forward address
-Comment[ru_RU] = Проверка работы рекурсивных dns-запросов
-Comment[en_EN] = Checking the operation of recursive dns queries - checking the validity of the dns forward address
-
-[is_address_written_in_nameserver]
-DisplayName = is_address_written_in_nameserver
-DisplayName[ru_RU] = Проверка наличия адреса 127.0.0.1 или адреса интерфейса в строке nameserver
-DisplayName[en_EN] = Checking for own address next to the nameserver string
-Comment = Checking for own address next to the nameserver string
-Comment[ru_RU] = Проверка наличия адреса 127.0.0.1 или адреса интерфейса в строке nameserver
-Comment[en_EN] = Checking for own address next to the nameserver string
-
-[does_kerberos_work]
-DisplayName = does_kerberos_work
-DisplayName[ru_RU] = Проверка работоспособности kerberos
-DisplayName[en_EN] = Checking the health of kerberos and ldap - there must be appropriate records
-Comment = Checking the health of kerberos and ldap - there must be appropriate records
-Comment[ru_RU] = Проверка работоспособности kerberos
-Comment[en_EN] = Checking the health of kerberos and ldap - there must be appropriate records
