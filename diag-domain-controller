@@ -125,6 +125,11 @@ test_status() {
 	esac
 }
 
+delimiter_line() {
+    echo
+    echo "================================================="
+}
+
 # Depending on the parameter of the cmd variable, the function decides what to run
 task() {
 	local task="$1"
@@ -134,12 +139,20 @@ task() {
 			task_show "$task"
 			;;
 		report)
-			;;
+			local retval=0
+
+			delimiter_line >> "$log_file"
+                        task_run "$task" >> "$log_file" 2>&1 || retval="$?"
+                        delimiter_line >> "$log_file"
+                        test_status "$retval" "$task" >> "$log_file"
+                        ;;
 		run)
 			if test -z "$task_list" || grep "$task" <<< "$task_list"; then
 				local retval=0
 
+				delimiter_line
 				task_run "$task" || retval="$?"
+				delimiter_line
 				test_status "$retval" "$task"
 			fi
 			;;
