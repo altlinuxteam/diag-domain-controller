@@ -46,7 +46,7 @@ EOF
     exit 0
 }
 
-TEMP=$(getopt -n "${0##*/}" -o "l,V,r,h", -l "list,version,report,help" -- "$@") || show_usage
+TEMP=$(getopt -n "$PROG_NAME" -o "l,V,r,h", -l "list,version,report,help" -- "$@") || show_usage
 eval set -- "$TEMP"
 
 while :; do
@@ -60,6 +60,7 @@ while :; do
 			shift
 			;;
 		-r|--report)
+			cmd="report"
 			shift
 			;;
 		-h|--help)
