@@ -168,6 +168,14 @@ is_domain_info_available() {
 
 	/usr/bin/samba-tool domain info 127.0.0.1 &> /dev/null || retval=1
 
+	if test "$retval" = 0; then
+		echo -e "General information about the domain controller:\n"
+		/usr/bin/samba-tool domain info 127.0.0.1
+	else
+		echo -e "Error:\n"
+		/usr/bin/samba-tool domain info 127.0.0.1
+	fi
+
 	return $retval
 }
 
