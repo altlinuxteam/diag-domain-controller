@@ -215,10 +215,25 @@ is_not_empty_sysvol() {
 # Checking for the samba package in the system
 is_samba_package_installed() {
 	local retval=0
-	local heimdal_name="samba-dc"
-	local mit_name="samba-dc-mitkrb5"
+	local heimdal_name=
+	local mit_name=
+
+	heimdal_name="samba-dc"
+	mit_name="samba-dc-mitkrb5"
 
 	rpm -q "$heimdal_name" &> /dev/null || rpm -q "$mit_name" &> /dev/null && retval=0 || retval=1
+
+	if test "$retval" = 0; then
+		if rpm -q "$heimdal_name" &> /dev/null ; then
+			echo -e "Basic information about the \"$heimdal_name\" package:\n"
+			rpm -qi "$heimdal_name"
+		else
+			echo -e "Basic information about the \"$mit_name\" package:\n"
+			rpm -qi "$mit_name"
+		fi
+	else
+		echo -e "Error. Perhaps the \"$heimdal_name\" package or \"$mit_name\" package is not installed"
+	fi
 
 	return $retval
 }
