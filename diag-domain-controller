@@ -13,12 +13,17 @@
 set -euo pipefail
 
 . shell-getopt
+. shell-temp
 
 PROG_NAME="${0##*/}"
-VERSION="0.0.1"
+VERSION="0.0.2"
 global_retval=0
 task_list="$*"
 cmd="run"
+current_date=$(date +"%Y-%m-%d_%H:%M")
+temp_dir=
+create_temporary temp_dir -d
+log_file="$temp_dir/report_$current_date.txt"
 
 print_version() {
 	cat <<EOF
