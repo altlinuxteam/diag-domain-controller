@@ -98,7 +98,7 @@ task_run() {
 	local retval=126
 	local func="$1"
 
-	if test -n "$task_list"; then
+	if test -n "$task_list" && test "$cmd" != "report"; then
 		echo "$task_list" | tr ' ' '\n' | grep -q "^$func\$" || return 0
 	fi
 
