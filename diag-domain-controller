@@ -185,6 +185,14 @@ is_hostname_correct() {
 
 	hostname | grep "^[^.]*\..*" &> /dev/null || retval=1
 
+	if test "$retval" = 0; then
+		echo -e "The full domain name of the host (FQDN):\n"
+		hostname
+	else
+		echo -e "Error. Check the spelling of the domain name of the host:\n"
+		hostname
+	fi
+
 	return $retval
 }
 
