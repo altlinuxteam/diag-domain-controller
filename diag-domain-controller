@@ -230,6 +230,10 @@ is_ntp_service_running() {
 	return $retval
 }
 
+if test "$cmd" = "report"; then
+	create_title
+fi
+
 task is_domain_info_available
 task is_hostname_correct
 task is_not_empty_sysvol
@@ -237,6 +241,10 @@ task is_samba_package_installed
 task is_samba_service_running
 task are_there_errors_in_samba_databases
 task is_ntp_service_running
+
+if test "$cmd" = "report"; then
+	cat "$log_file"
+fi
 
 # TODO: It is planned to write the rest of the functions for the tests
 # TODO: Will need to add a logging feature
