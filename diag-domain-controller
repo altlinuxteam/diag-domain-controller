@@ -283,11 +283,36 @@ are_there_errors_in_samba_databases() {
 	return $retval
 }
 
-# Time Synchronization Check - NTP service activity
+# Checking the activity of the ntp service
 is_ntp_service_running() {
 	local retval=0
 
-	test "$(timedatectl show -p NTP --value)" = 'yes' || retval=2
+	if test "$(timedatectl show -p NTP --value)" = "yes"; then
+		echo -e "The NTP service is active:\n"
+		timedatectl
+		retval=0
+	else
+		echo -e "The NTP service is inactive:\n"
+		timedatactl
+		retval=2
+	fi
+
+	return $retval
+}
+
+# Checking if time synchronization is enabled
+is_time_synchronization_enabled() {
+	local retval=0
+
+	if test "$(timedatectl show -p NTPSynchronized --value)" = "yes"; then
+		echo -e "Syncing is enabled:\n"
+		timedatectl
+		retval=0
+	else
+		echo -e "Warning. Time synchronization is disabled:\n"
+		timedatectl
+		retval=2
+	fi
 
 	return $retval
 }
@@ -303,6 +328,7 @@ task is_samba_package_installed
 task is_samba_service_running
 task are_there_errors_in_samba_databases
 task is_ntp_service_running
+task is_time_synchronization_enabled
 
 if test "$cmd" = "report"; then
 	cat "$log_file"

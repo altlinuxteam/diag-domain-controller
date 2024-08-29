@@ -45,7 +45,13 @@ Comment = Samba databases are checked for errors
 Comment[ru_RU] = Проверка на наличие ошибок в базах Samba
 
 [is_ntp_service_running]
-DisplayName = Time Synchronization Check - NTP service activity
+DisplayName = Checking the activity of the ntp service
+DisplayName[ru_RU] = Проверка: запущена ли служба NTP
+Comment = Checking the activity of the ntp service
+Comment[ru_RU] = Проверка: запущена ли служба NTP
+
+[is_time_synchronization_enabled]
+DisplayName = Checking if time synchronization is enabled
 DisplayName[ru_RU] = Проверка синхронизации времени
-Comment = Time Synchronization Check - NTP service activity
+Comment = Checking if time synchronization is enabled
 Comment[ru_RU] = Проверка синхронизации времени
