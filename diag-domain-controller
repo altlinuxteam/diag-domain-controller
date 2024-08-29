@@ -272,6 +272,14 @@ are_there_errors_in_samba_databases() {
 
 	/usr/bin/samba-tool dbcheck &> /dev/null || retval=1
 
+	if test "$retval" = 0; then
+		echo -e "No errors were found in the Samba databases:\n"
+		/usr/bin/samba-tool dbcheck
+	else
+		echo -e "Warning. There are no superuser rights or errors were found.\n"
+		/usr/bin/samba-tool dbcheck
+	fi
+
 	return $retval
 }
 
