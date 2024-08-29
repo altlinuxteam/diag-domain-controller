@@ -77,6 +77,18 @@ while :; do
 	esac
 done
 
+create_title() {
+        cat <<EOF >>"$log_file"
+        Domain Controller Diagnostic Tool
+-------------------------------------------------
+Version: $VERSION
+Date: $current_date
+-------------------------------------------------
+System information:
+Kernel: $(uname -r)
+EOF
+}
+
 task_show() {
 	local func="$1"
 	echo "$func"
