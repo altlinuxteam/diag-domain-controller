@@ -245,7 +245,23 @@ is_samba_service_running() {
 
 	service="samba.service"
 
-	systemctl status "$service" &> /dev/null || retval=1
+	if test "$(systemctl is-active "$service")" = "active"; then
+		echo -e "The \"$service\" service is running:\n"
+		systemctl status "$service" | head -n3
+		retval=0
+	elif test "$(systemctl is-active "$service")" = "failed"; then
+		echo -e "The service is not running, an error has occurred:\n"
+		systemctl status "$service"
+		retval=1
+	elif test "$(systemctl is-enabled "$service")" = "disabled"; then
+		echo -e "Warning. The service is not active:\n"
+		systemctl status "$service"
+		retval=2
+	else
+		echo -e "Error. Perhaps the service is missing:\n"
+		systemctl status "$service"
+		retval=1
+	fi
 
 	return $retval
 }
