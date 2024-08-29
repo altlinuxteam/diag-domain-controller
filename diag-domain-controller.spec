@@ -26,8 +26,8 @@ sed -i 's/^VERSION=.*/VERSION=%version/' %name
 mkdir -p %buildroot%_alterator_datadir/diagnostictools/%name
 
 install -p -D -m755 %name %buildroot%_bindir/%name
-install -p -D -m644 %name.backend %buildroot%_alterator_datadir/backends/%name.backend
-install -p -D -m644 %diagnostic_tool.diag %buildroot%_alterator_datadir/diagnostictools/%diagnostic_tool.diag
+install -p -D -m644 alterator/%name.backend %buildroot%_alterator_datadir/backends/%name.backend
+install -p -D -m644 alterator/%diagnostic_tool.diag %buildroot%_alterator_datadir/diagnostictools/%diagnostic_tool.diag
 install -p -D %name.svg %buildroot%_iconsdir/hicolor/scalable/apps/%name.svg
 
 %files
