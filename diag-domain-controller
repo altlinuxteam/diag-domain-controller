@@ -13,22 +13,27 @@
 set -euo pipefail
 
 . shell-getopt
+. shell-temp
 
 PROG_NAME="${0##*/}"
-VERSION="0.0.1"
+VERSION="0.0.2"
 global_retval=0
 task_list="$*"
 cmd="run"
+current_date=$(date +"%Y-%m-%d_%H:%M")
+temp_dir=
+create_temporary temp_dir -d
+log_file="$temp_dir/report_$current_date.txt"
 
 print_version() {
-	cat <<EOF
+    cat <<EOF
 $PROG_NAME version $VERSION
 EOF
     exit 0
 }
 
 show_usage() {
-	cat <<EOF
+    cat <<EOF
 $PROG_NAME - The Domain Controller Status Diagnostic Utility
 
 Usage: $PROG_NAME [options] [<diagnostic-task>]
@@ -41,163 +46,280 @@ EOF
     exit 0
 }
 
-TEMP=$(getopt -n "${0##*/}" -o "l,V,r,h", -l "list,version,report,help" -- "$@") || show_usage
+TEMP=$(getopt -n "$PROG_NAME" -o "l,V,r,h", -l "list,version,report,help" -- "$@") || show_usage
 eval set -- "$TEMP"
 
 while :; do
-	case "$1" in
-		-l|--list)
-			cmd="list"
-			shift
-			;;
-		-V|--version)
-			print_version
-			shift
-			;;
-		-r|--report)
-			shift
-			;;
-		-h|--help)
-			show_usage
-			shift
-			;;
-		--)
-			shift
-			break
-			;;
-		*)
-			fatal "Unrecognized option: $1"
-			;;
-	esac
+    case "$1" in
+	-l|--list)
+	    cmd="list"
+	    shift
+	    ;;
+	-V|--version)
+	    print_version
+	    shift
+	    ;;
+	-r|--report)
+	    cmd="report"
+	    shift
+	    ;;
+	-h|--help)
+	    show_usage
+	    shift
+	    ;;
+	--)
+	    shift
+	    break
+	    ;;
+	*)
+	    fatal "Unrecognized option: $1"
+	    ;;
+    esac
 done
 
+create_title() {
+    cat <<EOF >>"$log_file"
+        Domain Controller Diagnostic Tool
+-------------------------------------------------
+Version: $VERSION
+Date: $current_date
+-------------------------------------------------
+System information:
+Kernel: $(uname -r)
+EOF
+}
+
 task_show() {
-	local func="$1"
-	echo "$func"
+    local func="$1"
+    echo "$func"
 }
 
 task_run() {
-	local retval=126
-	local func="$1"
+    local retval=126
+    local func="$1"
 
-	if test -n "$task_list"; then
-		echo "$task_list" | tr ' ' '\n' | grep -q "^$func\$" || return 0
-	fi
+    if test -n "$task_list" && test "$cmd" != "report"; then
+	echo "$task_list" | tr ' ' '\n' | grep -q "^$func\$" || return 0
+    fi
 
-	$func && retval=0 || retval="$?"
-	test $retval = 0 || global_retval=1
+    $func && retval=0 || retval="$?"
+    test $retval = 0 || global_retval=1
 
-	return $retval
+    return $retval
 }
 
 # Determining the test execution status
 test_status() {
-	local retval="$1"
-	local task="$2"
+    local retval="$1"
+    local task="$2"
 
-	case "$retval" in
-		0) echo "[DONE]: $task"
-			;;
-		1) echo "[FAIL]: $task"
-			;;
-		2) echo "[WARN]: $task"
-			;;
-		*) echo "[FAIL]: $task"
-			;;
-	esac
+    case "$retval" in
+	0) echo "[DONE]: $task"
+	    ;;
+	1) echo "[FAIL]: $task"
+	    ;;
+	2) echo "[WARN]: $task"
+	    ;;
+	*) echo "[FAIL]: $task"
+	    ;;
+    esac
+}
+
+delimiter_line() {
+    echo
+    echo "================================================="
 }
 
 # Depending on the parameter of the cmd variable, the function decides what to run
 task() {
-	local task="$1"
+    local task="$1"
 
-	case "$cmd" in
-		list)
-			task_show "$task"
-			;;
-		report)
-			;;
-		run)
-			if test -z "$task_list" || grep "$task" <<< "$task_list"; then
-				local retval=0
+    case "$cmd" in
+	list)
+	    task_show "$task"
+	    ;;
+	report)
+	    local retval=0
 
-				task_run "$task" || retval="$?"
-				test_status "$retval" "$task"
-			fi
-			;;
-		*)
-			fatal "Unrecognized command: $cmd"
-			;;
-	esac
+	    delimiter_line >> "$log_file"
+	    task_run "$task" >> "$log_file" 2>&1 || retval="$?"
+	    delimiter_line >> "$log_file"
+	    test_status "$retval" "$task" >> "$log_file"
+	    ;;
+	run)
+	    if test -z "$task_list" || grep "$task" <<< "$task_list"; then
+		local retval=0
+
+		delimiter_line
+		task_run "$task" || retval="$?"
+		delimiter_line
+		test_status "$retval" "$task"
+	    fi
+	    ;;
+	*)
+	    fatal "Unrecognized command: $cmd"
+	    ;;
+    esac
 }
 
 # Checking the availability of viewing general domain information
 is_domain_info_available() {
-	local retval=0
+    local retval=0
 
-	/usr/bin/samba-tool domain info 127.0.0.1 &> /dev/null || retval=1
+    /usr/bin/samba-tool domain info 127.0.0.1 &> /dev/null || retval=1
 
-	return $retval
+    if test "$retval" = 0; then
+	echo -e "General information about the domain controller:\n"
+	/usr/bin/samba-tool domain info 127.0.0.1
+    else
+	echo -e "Error:\n"
+	/usr/bin/samba-tool domain info 127.0.0.1
+    fi
+
+    return $retval
 }
 
 # Checking the correct spelling of the domain name of the host
 is_hostname_correct() {
-	local retval=0
+    local retval=0
 
-	hostname | grep "^[^.]*\..*" &> /dev/null || retval=1
+    hostname | grep "^[^.]*\..*" &> /dev/null || retval=1
 
-	return $retval
+    if test "$retval" = 0; then
+	echo -e "The full domain name of the host (FQDN):\n"
+	hostname
+    else
+	echo -e "Error. Check the spelling of the domain name of the host:\n"
+	hostname
+    fi
+
+    return $retval
 }
 
 # Checking if the sysvol directory is empty
 is_not_empty_sysvol() {
-	local retval=0
+    local retval=0
 
-	test -n "$(ls -A /var/lib/samba/sysvol 2> /dev/null)" || retval=2
+    test -n "$(ls -A /var/lib/samba/sysvol 2> /dev/null)" || retval=2
 
-	return $retval
+    if test "$retval" = 0; then
+	echo -e "The \"sysvol\" directory contains the following files:\n"
+	ls -A /var/lib/samba/sysvol
+    else
+	echo -e "Error. There may be no rights to view the\ndirectory, the directory does not exist,\nor the directory is empty."
+    fi
+
+    return $retval
 }
 
 # Checking for the samba package in the system
 is_samba_package_installed() {
-	local retval=0
-	local heimdal_name="samba-dc"
-	local mit_name="samba-dc-mitkrb5"
+    local retval=0
+    local heimdal_name=
+    local mit_name=
 
-	rpm -q "$heimdal_name" &> /dev/null || rpm -q "$mit_name" &> /dev/null && retval=0 || retval=1
+    heimdal_name="samba-dc"
+    mit_name="samba-dc-mitkrb5"
 
-	return $retval
+    rpm -q "$heimdal_name" &> /dev/null || rpm -q "$mit_name" &> /dev/null && retval=0 || retval=1
+
+    if test "$retval" = 0; then
+	if rpm -q "$heimdal_name" &> /dev/null ; then
+	    echo -e "Basic information about the \"$heimdal_name\" package:\n"
+	    rpm -qi "$heimdal_name"
+	else
+	    echo -e "Basic information about the \"$mit_name\" package:\n"
+	    rpm -qi "$mit_name"
+	fi
+    else
+	echo -e "Error. Perhaps the \"$heimdal_name\" package or \"$mit_name\" package is not installed"
+    fi
+
+    return $retval
 }
 
 # Checking whether the Samba service is running
 is_samba_service_running() {
-	local retval=0
-	local service=
+    local retval=0
+    local service=
 
-	service="samba.service"
+    service="samba.service"
 
-	systemctl status "$service" &> /dev/null || retval=1
+    if test "$(systemctl is-active "$service")" = "active"; then
+	echo -e "The \"$service\" service is running:\n"
+	systemctl status "$service" | head -n3
+	retval=0
+    elif test "$(systemctl is-active "$service")" = "failed"; then
+	echo -e "The service is not running, an error has occurred:\n"
+	systemctl status "$service"
+	retval=1
+    elif test "$(systemctl is-enabled "$service")" = "disabled"; then
+	echo -e "Warning. The service is not active:\n"
+	systemctl status "$service"
+	retval=2
+    else
+	echo -e "Error. Perhaps the service is missing:\n"
+	systemctl status "$service"
+	retval=1
+    fi
 
-	return $retval
+    return $retval
 }
 
 # Samba databases are checked for errors
 are_there_errors_in_samba_databases() {
-	local retval=0
+    local retval=0
 
-	/usr/bin/samba-tool dbcheck &> /dev/null || retval=1
+    /usr/bin/samba-tool dbcheck &> /dev/null || retval=1
 
-	return $retval
+    if test "$retval" = 0; then
+	echo -e "No errors were found in the Samba databases:\n"
+	/usr/bin/samba-tool dbcheck
+    else
+	echo -e "Warning. There are no superuser rights or errors were found.\n"
+	/usr/bin/samba-tool dbcheck
+    fi
+
+    return $retval
 }
 
-# Time Synchronization Check - NTP service activity
+# Checking the activity of the ntp service
 is_ntp_service_running() {
-	local retval=0
+    local retval=0
 
-	test "$(timedatectl show -p NTP --value)" = 'yes' || retval=2
+    if test "$(timedatectl show -p NTP --value)" = "yes"; then
+	echo -e "The NTP service is active:\n"
+	timedatectl
+	retval=0
+    else
+	echo -e "The NTP service is inactive:\n"
+	timedatactl
+	retval=2
+    fi
 
-	return $retval
+    return $retval
 }
+
+# Checking if time synchronization is enabled
+is_time_synchronization_enabled() {
+    local retval=0
+
+    if test "$(timedatectl show -p NTPSynchronized --value)" = "yes"; then
+	echo -e "Syncing is enabled:\n"
+	timedatectl
+	retval=0
+    else
+	echo -e "Warning. Time synchronization is disabled:\n"
+	timedatectl
+	retval=2
+    fi
+
+    return $retval
+}
+
+if test "$cmd" = "report"; then
+    create_title
+fi
 
 task is_domain_info_available
 task is_hostname_correct
@@ -206,6 +328,11 @@ task is_samba_package_installed
 task is_samba_service_running
 task are_there_errors_in_samba_databases
 task is_ntp_service_running
+task is_time_synchronization_enabled
+
+if test "$cmd" = "report"; then
+    cat "$log_file"
+fi
 
 # TODO: It is planned to write the rest of the functions for the tests
 # TODO: Will need to add a logging feature
