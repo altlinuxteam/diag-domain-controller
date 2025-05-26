@@ -985,6 +985,34 @@ is_ports_listening() {
     return $retval
 }
 
+# Local validation for a list of trusted domains
+is_list_trusts_validated() {
+    local retval=0
+    local trusts=
+
+    if which samba-tool &>/dev/null; then
+        trusts="$(samba-tool domain trust list | awk '{print $4}' | sed 's/Name\[//;s/\]//' | __get_upper_string)"
+
+        if test -z "$trusts"; then
+            echo "The list of trusts has not been found."
+        else
+            echo "List of trusts:"
+            samba-tool domain trust list
+
+            while IFS= read -r domain; do
+                echo -e "\nLocal validation of trust relations for the domain \"$domain\":\n"
+
+                if ! samba-tool domain trust validate "$domain" --validate-location=local; then
+                    echo -e "\nAn error occurred during the local validation of trusts for the domain \"domain\"."
+                    retval=1
+                fi
+            done <<< "$trusts"
+        fi
+    fi
+
+    return "$retval"
+}
+
 task is_domain_info_available
 task is_hostname_correct
 task is_hostname_static_and_transient
@@ -1006,6 +1034,7 @@ task are_there_errors_in_samba_databases
 task is_ntp_service_running
 task is_time_synchronization_enabled
 task is_ports_listening
+task is_list_trusts_validated
 
 if test "$cmd" = "report"; then
     file_smb="/etc/samba/smb.conf"

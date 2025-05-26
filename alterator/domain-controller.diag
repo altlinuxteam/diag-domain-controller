@@ -4,7 +4,7 @@ category = "adtCategory"
 display_name.en = "Domain controller"
 display_name.ru = "Контроллер домена"
 comment.en = "The Domain Controller Status Diagnostic Utility"
-comment.eu = "Инструмент диагностики состояния контроллера домена"
+comment.ru = "Инструмент диагностики состояния контроллера домена"
 icon = "diag-domain-controller"
 report_suffix = "tar.gz"
 
@@ -133,3 +133,9 @@ display_name.en = "Checking services that listen on certain ports"
 display_name.ru = "Проверка портов, прослушиваемых необходимыми службами"
 comment.en = "Checking services that listen on certain ports"
 comment.ru = "Проверка портов, прослушиваемых необходимыми службами"
+
+[tests.is_list_trusts_validated]
+display_name.en = "Local validation for a list of trusted domains"
+display_name.ru = "Локальная валидация для списка доверенных доменов"
+comment.en = "Local validation for a list of trusted domains"
+comment.ru = "Локальная валидация для списка доверенных доменов"
