@@ -139,3 +139,9 @@ display_name.en = "Local validation for a list of trusted domains"
 display_name.ru = "Локальная валидация для списка доверенных доменов"
 comment.en = "Local validation for a list of trusted domains"
 comment.ru = "Локальная валидация для списка доверенных доменов"
+
+[tests.is_nscd_service_disabled]
+display_name.en = "Checking whether the nscd service is disabled"
+display_name.ru = "Проверка: отключён ли сервис nscd"
+comment.en = "Checking whether the nscd service is disabled"
+comment.ru = "Проверка: отключён ли сервис nscd"

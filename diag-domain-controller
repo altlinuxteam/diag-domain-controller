@@ -1013,6 +1013,24 @@ is_list_trusts_validated() {
     return "$retval"
 }
 
+# Checking whether the nscd service is disabled
+is_nscd_service_disabled() {
+    local retval=0
+    local service_nscd=
+
+    service_nscd="nscd.service"
+
+    if __service_running "$service_nscd" &>/dev/null; then
+        echo "The \"$service_nscd\" service is not disabled."
+        echo "This service should be turned off."
+        retval=1
+    else
+        echo "The \"$service_nscd\" service is disabled."
+    fi
+
+    return "$retval"
+}
+
 task is_domain_info_available
 task is_hostname_correct
 task is_hostname_static_and_transient
@@ -1035,6 +1053,7 @@ task is_ntp_service_running
 task is_time_synchronization_enabled
 task is_ports_listening
 task is_list_trusts_validated
+task is_nscd_service_disabled
 
 if test "$cmd" = "report"; then
     file_smb="/etc/samba/smb.conf"
