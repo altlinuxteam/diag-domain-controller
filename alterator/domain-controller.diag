@@ -145,3 +145,9 @@ display_name.en = "Checking whether the nscd service is disabled"
 display_name.ru = "Проверка: отключён ли сервис nscd"
 comment.en = "Checking whether the nscd service is disabled"
 comment.ru = "Проверка: отключён ли сервис nscd"
+
+[tests.is_nslcd_service_disabled]
+display_name.en = "Checking whether the nslcd service is disabled"
+display_name.ru = "Проверка: отключён ли сервис nslcd"
+comment.en = "Checking whether the nslcd service is disabled"
+comment.ru = "Проверка: отключён ли сервис nslcd"
